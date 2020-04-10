@@ -28,6 +28,7 @@ app.post("/repositories", (request, response) => {
 
 app.put("/repositories/:id", (request, response) => {
   const { id } = request.params;
+  const { title, url, techs } = request.body;
 
   if(!isUuid(id)){
     return response.status(400).json({ error: "ID Not Valid" })
@@ -38,8 +39,6 @@ app.put("/repositories/:id", (request, response) => {
   if(repositoryIndex < 0) { 
     return response.status(400).json({ error: "Respository dont exists"})
   }
-  
-  const { title, url, techs } = request.body;
 
   const newRepository = {
     id,
@@ -88,8 +87,8 @@ app.post("/repositories/:id/like", (request, response) => {
 
   repositories[repositoryIndex].likes += 1; 
 
-  return response.status(200).json({ likes: repositories[repositoryIndex].likes })
-
+  return response.status(200).json(repositories[repositoryIndex])
+  
 });
 
 module.exports = app;
